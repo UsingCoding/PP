@@ -1,7 +1,7 @@
-#include "BMPBlurer.h"
+#include "BMPHelper.h"
 #include "BMPFILE.h"
 
-BMPFILE BMPBlurer::ReadFromFile(std::string path)
+BMPFILE BMPHelper::ReadFromFile(std::string path)
 {
 	std::ifstream fin(path, std::ios::in | std::ios::binary);
 	BMPFILE::BMPINFO bmpInfo;
@@ -42,7 +42,7 @@ BMPFILE BMPBlurer::ReadFromFile(std::string path)
 	return BMPFILE(bmpInfo, pixels);
 }
 
-void BMPBlurer::BlurByWidth(BMPFILE* originalBmp, BMPFILE* bluredBmp, int startWidth, int endWidth, std::ofstream* fout, clock_t startTime, int threadNumber, int radius)
+void BMPHelper::BlurByWidth(BMPFILE* originalBmp, BMPFILE* bluredBmp, int startWidth, int endWidth, std::ofstream* fout, clock_t startTime, int threadNumber, int radius)
 {
 	float rs = std::ceil(radius * 2.57);
 	for (int i = 0; i < originalBmp->GetHeight() - 1; ++i)
@@ -81,7 +81,7 @@ void BMPBlurer::BlurByWidth(BMPFILE* originalBmp, BMPFILE* bluredBmp, int startW
 	}
 }
 
-void BMPBlurer::WriteBMPFile(BMPFILE* bmp, std::string path)
+void BMPHelper::WriteBMPFile(BMPFILE* bmp, std::string path)
 {
 	std::ofstream fout(path, std::ios::out | std::ios::binary);
 

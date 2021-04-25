@@ -5,7 +5,7 @@
 #include <windows.h>
 #include <time.h>
 #include "BMPFILE.h"
-#include "BMPBlurer.h"
+#include "BMPHelper.h"
 
 struct Params
 {
@@ -23,16 +23,6 @@ DWORD WINAPI ThreadProc(CONST LPVOID lpParam)
 	struct Params* params = (struct Params*)lpParam;
 	BMPHelper::BlurByWidth(&*params->bmp, &*params->blured, params->start, params->end, &*params->fout, params->startTime, params->threadNumber);
 	ExitThread(0);
-}
-
-void WriteHowTo()
-{
-	std::cout << "Example: "
-		<< "main.exe" << " "
-		<< "input.bmp" << " "
-		<< "output.bmp" << " "
-		<< "threadCount" << " "
-		<< "coreCount" << " ";
 }
 
 int main(int argc, char* argv[])
