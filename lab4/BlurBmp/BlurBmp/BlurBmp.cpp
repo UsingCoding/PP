@@ -22,7 +22,7 @@ struct SBlurBmpThreadSettings
 	std::clock_t startTime;
 
 	std::vector<double> times;
-	
+
 	int blurRadius = 0;
 };
 
@@ -56,7 +56,7 @@ DWORD WINAPI AsyncBlurFunc(CONST LPVOID lpParam)
 					int minHeight = min(int(settings->inputImage.height()) - 1, max(i, 0));
 
 					int minWidth = min(int(settings->inputImage.width()), max(j, 0));
-					
+
 					rgb_t pixel = settings->inputImage.get_pixel(minWidth, minHeight);
 
 					pixels.push_back(pixel);
@@ -104,13 +104,13 @@ void BlurBmp(const SAsyncBlurBMPSettings& settings)
 	}
 
 	std::cout << "Cores: " << settings.coresCount << " Threads: " << settings.threadsCount << std::endl;
-	
+
 	const unsigned int wPerThread = w / settings.threadsCount;
 
 	auto affinityMask = (1 << int(settings.coresCount)) - 1;
 
 	std::clock_t start = std::clock();
-	
+
 	for (int i = 0; i < settings.threadsCount; ++i)
 	{
 		SBlurBmpThreadSettings* threadSettings = new SBlurBmpThreadSettings();
@@ -121,7 +121,7 @@ void BlurBmp(const SAsyncBlurBMPSettings& settings)
 		threadSettings->endBlurPixelY = h;
 		threadSettings->startBlurPixelX = (wPerThread * i);
 		threadSettings->startTime = start;
-		
+
 		if (i + 1 != settings.threadsCount)
 		{
 			threadSettings->endBlurPixelX = wPerThread * (i + 1);
@@ -151,18 +151,18 @@ void BlurBmp(const SAsyncBlurBMPSettings& settings)
 
 	WaitForMultipleObjects(static_cast<DWORD>(threadHandles.size()), threadHandles.data(), true, INFINITE);
 
-	std::ofstream log("log.txt");
+	std::ofstream log("log.log");
 
 	for (size_t i = 0; i < settingsPtr.size(); ++i)
 	{
 		settingsPtr[i]->times.erase(std::unique(settingsPtr[i]->times.begin(), settingsPtr[i]->times.end()), settingsPtr[i]->times.end());
 
-		for (size_t g = 0; g < settingsPtr[i]->times.size(); ++g)
+		for (size_t j = 0; g < settingsPtr[i]->times.size(); ++j)
 		{
-			log << i + 1 << "\t" << settingsPtr[i]->times[g] << std::endl;
+			log << i + 1 << "\t" << settingsPtr[i]->times[j] << std::endl;
 		}
 	}
-	
+
 	for (auto element : settingsPtr)
 	{
 		delete element;
@@ -170,5 +170,5 @@ void BlurBmp(const SAsyncBlurBMPSettings& settings)
 
 	outputImage.save_image(settings.outputImageName);
 
-	std::cout << "Runtime: " << GetTimeDifference(start) << " ms" << std::endl;
+	std::cout << "Time elapsed: " << GetTimeDifference(start) << " ms" << std::endl;
 }
