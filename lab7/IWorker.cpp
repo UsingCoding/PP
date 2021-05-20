@@ -11,7 +11,7 @@ DWORD WINAPI ThreadProc(LPVOID lpParam)
 	ExitThread(0);
 }
 
-bool IWorker::ExecuteTask(ITask* taskToRun)
+bool Worker::ExecuteTask(ITask* taskToRun)
 {
 	if (IsBusy())
 	{
@@ -22,13 +22,13 @@ bool IWorker::ExecuteTask(ITask* taskToRun)
 	if(m_thread = CreateThread(NULL, 0, &ThreadProc, taskToRun, CREATE_SUSPENDED, NULL))
 	{
 		ResumeThread(m_thread);
-		return false;
+		return true;
 	}
 
 	return false;
 }
 
-bool IWorker::IsBusy()
+bool Worker::IsBusy()
 {
 	DWORD exitcode;
 	GetExitCodeThread(m_thread, &exitcode);

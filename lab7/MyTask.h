@@ -16,7 +16,6 @@ public:
 
     void Execute() override
     {
-        std::cout << "Execute thread #";
-		std::cout << std::to_string(_value) + "\n";
+        std::cout << "Execute thread number: " + std::to_string(_value) + "\n";
     }
 };

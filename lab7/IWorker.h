@@ -6,7 +6,7 @@
 
 extern CRITICAL_SECTION CriticalSection;
 
-class IWorker
+class Worker
 {
 private:
 	HANDLE m_thread;
@@ -14,11 +14,11 @@ private:
 	bool _end = false;
 
 public:
-	IWorker()
+	Worker()
 	{
 	}
 
-	~IWorker()
+	~Worker()
 	{
 		WaitForSingleObject(m_thread, INFINITE);
 	}
@@ -26,4 +26,3 @@ public:
 	bool ExecuteTask(ITask* taskToRun);
 	bool IsBusy();
 };
-
