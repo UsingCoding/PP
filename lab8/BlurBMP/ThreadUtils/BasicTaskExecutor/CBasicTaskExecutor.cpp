@@ -27,20 +27,6 @@ CBasicTaskExecutor::~CBasicTaskExecutor()
 
 void CBasicTaskExecutor::Execute()
 {
-	//std::vector<std::thread> threads;
-
-	//for (size_t i = 0; i < m_impl->tasks.size(); i++)
-	//{
-	//	threads.emplace_back(std::thread([&](std::shared_ptr<ITask> task) {
-	//		task->Execute();
-	//		}, m_impl->tasks[i]));
-	//}
-
-	//for (auto& thread : threads)
-	//{
-	//	thread.join();
-	//}
-
 	std::vector<HANDLE> handles(m_impl->tasks.size());
 
 	for (size_t i = 0; i < m_impl->tasks.size(); i++)
