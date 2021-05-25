@@ -103,16 +103,11 @@ std::vector<SBlurBmpBlockSettings*> CreateBlockSettingsForSingleImage(bitmap_ima
 
 int main(int argc, char* argv[])
 {
-	if (argc != 6) {
-		std::cout << "Please provide input params: <mode=pool|basic> <blocksQuantity> <imageSourceDir> <imageOutDir> <threadsInPoolQuantity>" << std::endl;
-		return 0;
-	}
-
-	std::string mode(argv[1]);
-	int blocksQ = std::stoi(argv[2]);
-	std::string inputImageDirectory(argv[3]);
-	std::string outputImageDirectory(argv[4]);
-	int threadsInPoolQ = std::stoi(argv[5]);
+	std::string mode("pool");
+	int blocksQ = 2;
+	std::string inputImageDirectory("../images");
+	std::string outputImageDirectory("../blurred-images");
+	int threadsInPoolQ = 4;
 
 	if (!std::filesystem::is_directory(outputImageDirectory) || !std::filesystem::exists(outputImageDirectory))
 	{
@@ -157,7 +152,7 @@ int main(int argc, char* argv[])
 
 	std::clock_t end = std::clock();
 
-	std::cout << "Runtime: " << end - start << std::endl;
+	std::cout << "Time elapsed: " << end - start << std::endl;
 
 	return 0;
 }

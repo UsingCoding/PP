@@ -22,9 +22,9 @@ CPool::CPool(std::vector<std::shared_ptr<ITask>> tasks, unsigned threadsCount)
 	m_impl = new SPoolImpl();
 
 	m_impl->tasks = std::move(tasks);
-	
+
 	m_impl->handles.resize(m_impl->tasks.size());
-	
+
 	for (size_t i = 0; i < m_impl->handles.size(); ++i)
 	{
 		m_impl->handles[i] = CreateThread(nullptr, 0, &ThreadProc, m_impl->tasks[i].get(), CREATE_SUSPENDED, nullptr);
@@ -40,41 +40,17 @@ CPool::~CPool()
 
 void CPool::Execute()
 {
-	//std::vector<std::thread> threads;
-
-	//for (size_t i = 0; i < m_impl->tasks.size(); i++)
-	//{
-	//	threads.emplace_back(std::thread([&] (std::shared_ptr<ITask> task) {
-	//		task->Execute();
-	//	}, m_impl->tasks[i]));
-
-	//	if (threads.size() == m_impl->threadCount)
-	//	{
-	//		for (auto& thread : threads) 
-	//		{
-	//			thread.join();
-	//		}
-
-	//		threads.clear();
-	//	}
-	//}
-
-	//for (auto& thread : threads)
-	//{
-	//	thread.join();
-	//}
-
-	int cnt = 0;
+	int count = 0;
 
 	for (size_t i = 0; i < m_impl->handles.size(); ++i)
 	{
 		ResumeThread(m_impl->handles[i]);
-		cnt++;
+		count++;
 
-		if (m_impl->threadCount == cnt)
+		if (m_impl->threadCount == count)
 		{
 			WaitForMultipleObjects((DWORD)i + 1, m_impl->handles.data(), true, INFINITE);
-			cnt = 0;
+			count = 0;
 		}
 	}
 
